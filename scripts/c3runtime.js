@@ -4207,12 +4207,21 @@ JumpSustain(){return this._GetJumpSustain()*1E3}}};
 }
 
 {
+'use strict';{const C3=self.C3;C3.Behaviors.bound=class BoundBehavior extends C3.SDKBehaviorBase{constructor(opts){super(opts)}Release(){super.Release()}}}{const C3=self.C3;C3.Behaviors.bound.Type=class BoundType extends C3.SDKBehaviorTypeBase{constructor(behaviorType){super(behaviorType)}Release(){super.Release()}OnCreate(){}}}
+{const C3=self.C3;const MODE=0;C3.Behaviors.bound.Instance=class BoundInstance extends C3.SDKBehaviorInstanceBase{constructor(behInst,properties){super(behInst);this._mode=0;if(properties)this._mode=properties[MODE];this._StartTicking2()}Release(){super.Release()}SaveToJson(){return{"m":this._mode}}LoadFromJson(o){this._mode=o["m"]}Tick2(){const wi=this._inst.GetWorldInfo();const bbox=wi.GetBoundingBox();const layout=wi.GetLayout();let isChanged=false;if(this._mode===0){if(wi.GetX()<0){wi.SetX(0);
+isChanged=true}if(wi.GetY()<0){wi.SetY(0);isChanged=true}if(wi.GetX()>layout.GetWidth()){wi.SetX(layout.GetWidth());isChanged=true}if(wi.GetY()>layout.GetHeight()){wi.SetY(layout.GetHeight());isChanged=true}}else{if(bbox.getLeft()<0){wi.OffsetX(-bbox.getLeft());isChanged=true}if(bbox.getTop()<0){wi.OffsetY(-bbox.getTop());isChanged=true}if(bbox.getRight()>layout.GetWidth()){wi.OffsetX(-(bbox.getRight()-layout.GetWidth()));isChanged=true}if(bbox.getBottom()>layout.GetHeight()){wi.OffsetY(-(bbox.getBottom()-
+layout.GetHeight()));isChanged=true}}if(isChanged)wi.SetBboxChanged()}GetPropertyValueByIndex(index){switch(index){case MODE:return this._mode}}SetPropertyValueByIndex(index,value){switch(index){case MODE:this._mode=value;break}}}}{const C3=self.C3;C3.Behaviors.bound.Cnds={}}{const C3=self.C3;C3.Behaviors.bound.Acts={}}{const C3=self.C3;C3.Behaviors.bound.Exps={}};
+
+}
+
+{
 const C3 = self.C3;
 self.C3_GetObjectRefTable = function () {
 	return [
 		C3.Plugins.Sprite,
 		C3.Behaviors.solid,
 		C3.Behaviors.Platform,
+		C3.Behaviors.bound,
 		C3.Plugins.Keyboard,
 		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.System.Acts.Scroll,
@@ -4226,17 +4235,21 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.CompareVar,
 		C3.Plugins.System.Acts.RestartLayout,
-		C3.Plugins.System.Acts.ResetGlobals
+		C3.Plugins.System.Acts.ResetGlobals,
+		C3.Plugins.System.Acts.NextPrevLayout,
+		C3.Plugins.System.Acts.GoToLayout
 	];
 };
 self.C3_JsPropNameTable = [
 	{Sólido: 0},
 	{chao: 0},
 	{Plataforma: 0},
+	{RestritoAoLayout: 0},
 	{player: 0},
 	{Teclado: 0},
-	{triavida: 0},
+	{tiravida: 0},
 	{Sprite: 0},
+	{proximaFase: 0},
 	{vida: 0}
 ];
 
@@ -4244,8 +4257,9 @@ self.InstanceType = {
 	chao: class extends self.ISpriteInstance {},
 	player: class extends self.ISpriteInstance {},
 	Teclado: class extends self.IInstance {},
-	triavida: class extends self.ISpriteInstance {},
-	Sprite: class extends self.ISpriteInstance {}
+	tiravida: class extends self.ISpriteInstance {},
+	Sprite: class extends self.ISpriteInstance {},
+	proximaFase: class extends self.ISpriteInstance {}
 }
 }
 
